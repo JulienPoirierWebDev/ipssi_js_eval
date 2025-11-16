@@ -43,6 +43,7 @@ const marché_final = [
 let argentDuJoueur = 100;
 let marcheActuel = marché_médiéval;
 let marchesDebloques = ["marché_médiéval"];
+let nomMarchéActuel = "marché_médiéval";
 
 // Fonction principale pour pouvoir afficher le marché
 function afficherMarche() {
@@ -125,12 +126,32 @@ function vendreProduit(index) {
   afficherMarche();
 }
 
+function calculerVariationPrix(prix, marche) {
+  let variation = 0;
+  const magnitude = Math.floor(Math.random() * 11); // Variation entre 0 et 10
+  let actualMagnitude = magnitude;
+  if (marche === "marché_médiéval") {
+    actualMagnitude = magnitude;
+  } else if (marche === "marché_renaissance") {
+    actualMagnitude = magnitude*2;
+  } else if(marche === "marché_modernité") {
+    actualMagnitude = magnitude*3;
+  }
+  if(marche === "marché_futuriste") {
+    actualMagnitude = magnitude*4;
+  }
+
+  variation = Math.round((Math.random() - 0.5) * actualMagnitude);
+  return prix + variation;
+}
+
 // Ca c'est la variation des prix toutes les 2 secondes
 function faireVarierLesPrix() {
   for (let i = 0; i < marcheActuel.length; i++) {
     const produit = marcheActuel[i];
-    const changement = Math.floor(Math.random() * 20) - 10;
-    produit.price += changement;
+    // Cela aurait été bien de mettre cela dans une fonction, qui permet de varier les prix de manière plus forte, selon le marché par exemple
+    produit.price = calculerVariationPrix(produit.price, nomMarchéActuel);
+    console.log(produit.price);
 // on a mit cette ligne pour pas que le marché soit en négatif et ne fasse tout buger
     if (produit.price < 1) produit.price = 1;
   }
@@ -170,6 +191,7 @@ function debloquerMarche(nomAcces) {
 // Pour Changer de marché via le menu
 function changerDeMarche() {
   const valeur = document.getElementById("choixMarche").value;
+  nomMarchéActuel = valeur;
   if (valeur === "marché_médiéval") marcheActuel = marché_médiéval;
   if (valeur === "marché_renaissance") marcheActuel = marché_renaissance;
   if (valeur === "marché_modernité") marcheActuel = marché_modernité;
