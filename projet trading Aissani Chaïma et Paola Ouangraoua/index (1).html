@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>💰 Marché Fluctuant</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>💰 Marché Fluctuant</h1>
+    <p>Achète et vends au bon moment !</p>
+
+    <div class="btns">
+      <button onclick="unlockOrChange('medieval', 0)">Marché Médiéval</button>
+      <button id="btnRenaissance" onclick="unlockOrChange('renaissance', 200)">
+        Renaissance
+      </button>
+      <button id="btnModernite" onclick="unlockOrChange('modernité', 500)">
+        Modernité
+      </button>
+      <button id="btnFuturiste" onclick="unlockOrChange('futuriste', 2000)">
+        Futuriste
+      </button>
+      <button id="btnFinal" onclick="unlockOrChange('final', 5000)">
+        Final
+      </button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Objet</th>
+          <th>Prix</th>
+          <th>Quantité</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="market"></tbody>
+    </table>
+
+    <p id="money">💵 Argent : 100</p>
+
+    <audio
+      id="buySound"
+      src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_b8c80d2d1d.mp3?filename=click-124467.mp3"
+    ></audio>
+    <audio
+      id="sellSound"
+      src="https://cdn.pixabay.com/download/audio/2021/09/13/audio_4a7ab6b2fb.mp3?filename=coin-45632.mp3"
+    ></audio>
+    <link rel="stylesheet" href="trading.css" />
+    <script src="script.js"></script>
+  </body>
+</html>
