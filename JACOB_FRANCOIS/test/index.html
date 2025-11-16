@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Pokémon</title>
+    <link rel="stylesheet" href="style.css" /> 
+</head>
+<body>
+    
+    <div class="game-container">
+        
+        <section class="main-clicker">
+            <div class="score-display">
+                <h1>Points : <span class="points">0</span></h1>
+                <p><span class="pps">0.0</span> points par seconde</p>
+            </div>
+            
+            <img src="images/pokeball.png" alt="Pokeball" class="image-pokeball" onclick="incrementation()" draggable="false">
+            
+            <div class="util-buttons">
+                <button id="saveButton">save</button>
+                <button id="loadButton">load</button>
+            </div>
+        </section>
+
+        
+
+
+
+
+        <hr>
+
+        <aside class="magasin">
+            <h2>Améliorations</h2>
+            <div class="ameliorations">
+                </div>
+            
+            <hr style="margin: 20px 0;">
+
+            <div class="pack-achat">
+                <h3>Pack de Cartes Aléatoires</h3>
+                <button id="buyPackButton" onclick="ouvrirBooster()">
+                    Acheter Pack de Cartes (<span class="pack-cost">1 500</span> points)
+                </button>
+            </div>
+        </aside>
+
+        <hr>
+
+        <section class="collection-area">
+            <h2>Collection Pokémon</h2>
+            <div class="cartes">
+                <p>Achetez un pack de cartes pour commencer votre collection!</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Pokémon</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="images/pokeball.png" />
+</head>
+<body>
+    
+    <div class="main">
+        <section class="gauche-section">
+            <div class="gauche">
+                <h1>Points : <span class="points">0</span></h1> 
+                <img src="images/pokeball.png" alt="pokeball" class="image-pokeball" onclick="incrementation(event)" draggable="false">
+                <p><span class="pps">0.0</span> points par seconde</p>
+                <p id="level-display">Niv. 1 : Jeune Dresseur de Bourg Palette</p>
+            </div>
+        </section>
+
+        <section class="droite-section">
+            <div class="droite">
+                <div class="util-buttons-container"> 
+                    <button class="util-buttons" onclick="save()">save</button>
+                    <button class="util-buttons" onclick="load()">load</button>
+                </div>
+                
+                <div class="right-navbar">
+                    <div id="ameliorations-nav-buttons" class="nav-button active">Améliorations</div>
+                    <div id="packs-de-cartes-nav-buttons" class="nav-button">Packs de cartes</div>
+                    <div id="succes-nav-buttons" class="nav-button">Succès</div>
+                    <div id="combat-nav-buttons" class="nav-button hidden-tab">Combat</div>
+                </div>
+
+                <div id="upgrade-container"></div>
+            </div>
+        </section>
+    </div>
+
+    <audio id="sound-click" src="audio/click.mp3" preload="auto"></audio>
+    <audio id="sound-purchase" src="audio/achat.mp3" preload="auto"></audio>
+    <audio id="sound-success" src="audio/succes.mp3" preload="auto"></audio>
+    <audio id="sound-victory" src="audio/victoire.mp3" preload="auto"></audio>
+    <audio id="sound-defeat" src="audio/defaite.mp3" preload="auto"></audio>
+    <audio id="sound-reveal" src="audio/cartes.mp3" preload="auto"></audio>
+    <audio id="sound-music-bg" src="audio/background.mp3" loop></audio>
+
+    <h2>Cartes Pokémon</h2>
+    <div class="cartes"></div>
+    
+    <script src="data.js"></script> 
+    <script src="script.js"></script>
+
+    <div id="toast-container"></div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+/* --- Styles Généraux et Centrage --- */
+body {
+    background-color: #f0f0f0; 
+    color: #333;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    padding: 20px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 30px 0;
+}
+
+/* --- Zone de Clic et Score --- */
+.score-display {
+    margin-bottom: 20px;
+}
+
+.image-pokeball {
+    width: 150px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s;
+}
+
+.image-pokeball:active {
+    transform: scale(0.95);
+}
+
+.util-buttons {
+    margin: 20px 0;
+}
+
+.util-buttons button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin: 0 5px;
+    text-transform: lowercase;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+/* --- Magasin / Améliorations --- */
+.magasin {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+}
+
+.magasin h2 {
+    margin: 10px 0;
+    padding: 5px;
+    background-color: #444;
+    color: white;
+    border-radius: 4px;
+}
+
+.ameliorations {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.upgrade-item {
+    background-color: #ffaa33;
+    color: #333;
+    padding: 10px;
+    border: 2px solid #cc8800;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.upgrade-info {
+    text-align: left;
+}
+
+.upgrade-achat p {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* --- Zone d'Achat de Pack --- */
+.pack-achat {
+    padding: 10px;
+    border: 1px dashed #777;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.pack-achat h3 {
+    margin-top: 0;
+}
+#buyPackButton {
+    background-color: #4CAF50; 
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1.1em;
+    cursor: pointer;
+    border-radius: 5px;
+}
+#buyPackButton:hover {
+    background-color: #45a049;
+}
+
+/* --- Section Cartes Pokémon (Collection) --- */
+.collection-area {
+    margin-top: 20px;
+}
+.cartes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    min-height: 50px;
+}
+
+.pokemon-card {
+    width: 100px;
+    border: 3px solid; 
+    border-radius: 8px;
+    padding: 5px;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-sprite {
+    width: 80px;
+    height: 80px;
+}
+
+.card-info h4 {
+    margin: 3px 0 0 0;
+    font-size: 0.9em;
+}
+
+.card-qty {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #007bff; 
+}
+
+/* Styles des couleurs par Rareté */
+.pokemon-card.rarity-1 { border-color: #a0a0a0; background-color: #e8e8e8; } 
+.pokemon-card.rarity-2 { border-color: #5aa1ff; background-color: #d8e8ff; } 
+.pokemon-card.rarity-3 { border-color: #ff5a5a; background-color: #ffe0e0; } 
+.pokemon-card.rarity-4 { border-color: #ffc800; background-color: #fff0c0; } 
+.pokemon-card.rarity-5 { border-color: #c900ff; background-color: #f0c0ff; }
