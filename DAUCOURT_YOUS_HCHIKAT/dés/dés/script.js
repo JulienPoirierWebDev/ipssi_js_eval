@@ -30,17 +30,7 @@ function changerDeJoueur() {
 }
 
 
-boutonLancerDe.addEventListener('click', () => {
-  const valeurDe = lancerLeDé();
-  
-  mettreAJourLaValeurDuDé(valeurDe);  
-  if (valeurDe !== 1) {
-    leDéNeTombePasSurLe1(valeurDe);
-  } else {
-    leDéTombeSurLe1();
-  }
-   
-});
+
 
 function lancerLeDé() {
   return Math.floor(Math.random() * 6) + 1;
@@ -62,16 +52,7 @@ function leDéTombeSurLe1() {
 }
 
 
-boutonGarderScore.addEventListener('click', () => {
-  mettreAJourLesScores();
-  
-  const jeuEstTerminé = vérifierSiLeJeuEstTerminé();
-  if (jeuEstTerminé) {
-    finirLeJeu();
-  } else {
-    changerDeJoueur();
-  }
-});
+
 
 function mettreAJourLesScores() {
   scoresTotaux[numeroJoueurActif - 1] += scoreActuelDuTour;
@@ -89,4 +70,33 @@ function finirLeJeu() {
 }
 
 
-boiteJoueur1.classList.add('active');
+
+function initialiserJeu() {
+  
+  boutonLancerDe.addEventListener('click', () => {
+    const valeurDe = lancerLeDé();
+    
+    mettreAJourLaValeurDuDé(valeurDe);  
+    if (valeurDe !== 1) {
+      leDéNeTombePasSurLe1(valeurDe);
+    } else {
+      leDéTombeSurLe1();
+    }
+    
+  });
+
+  boutonGarderScore.addEventListener('click', () => {
+  mettreAJourLesScores();
+  
+  const jeuEstTerminé = vérifierSiLeJeuEstTerminé();
+    if (jeuEstTerminé) {
+      finirLeJeu();
+    } else {
+      changerDeJoueur();
+    }
+  });
+
+  boiteJoueur1.classList.add('active');
+}
+
+initialiserJeu();
