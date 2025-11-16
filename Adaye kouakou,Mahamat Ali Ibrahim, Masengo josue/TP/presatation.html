@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mon site — Ton Prénom</title>
+    <meta name="description" content="Page personnelle simple avec lien Instagram" />
+    <style>
+        :root {
+            --bg: #0f1724;
+            /* dark */
+            --card: #0b1220;
+            --muted: #94a3b8;
+            --accent: #ff6b6b;
+            --glass: rgba(255, 255, 255, 0.04);
+            color-scheme: dark;
+            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(180deg, #071024 0%, #081226 50%);
+            color: #e6eef8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 980px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .profile {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.25));
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--muted);
+        }
+
+        h1 {
+            margin: 6px 0 0;
+            font-size: 22px
+        }
+
+        p.lead {
+            margin: 6px 0 12px;
+            color: var(--muted)
+        }
+
+        .insta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+            text-decoration: none;
+            color: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform .12s ease, box-shadow .12s ease;
+        }
+
+        .insta-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5)
+        }
+
+        .bio {
+            background: var(--glass);
+            padding: 12px;
+            border-radius: 10px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.45
+        }
+
+        .main {
+            padding: 6px 6px 6px 2px
+        }
+
+        .section {
+            margin-bottom: 18px
+        }
+
+        .cards {
+            display: flex;
+            gap: 12px
+        }
+
+        .card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 12px;
+            border-radius: 12px
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        .chip {
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.03);
+            font-size: 13px
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: transparent;
+            cursor: pointer
+        }
+
+        footer {
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        /* responsive */
+        @media (max-width:880px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .avatar {
+                width: 110px;
+                height: 110px
+            }
+        }
+
+        /* small utility */
+        .muted {
+            color: var(--muted)
+        }
+
+        .accent {
+            color: var(--accent)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="site">
+        <aside class="profile">
+            <div class="avatar" id="avatar">JS</div>
+            <h1 id="name">josue Masengo</h1>
+            <p class="lead" id="role">Créateur · Étudiant · Passionné</p>
+
+            <div class="bio" id="bio">Salut ! Je suis développeur frontend qui aime créer des interfaces propres, des
+                animations douces et des expériences utilisateur simples. J'adore la musique, la photo, et tout ce qui
+                est visuel.</div>
+
+            <div style="margin-top:14px">
+
+                <a id="instagramLink" class="insta-btn" href="https://instagram.com/I am maskaf" target="_blank"
+                    rel="noopener noreferrer">
+                    <!-- Instagram SVG -->
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.2"
+                            fill="none"></rect>
+                        <circle cx="12" cy="12" r="3.1" stroke="currentColor" stroke-width="1.2" fill="none"></circle>
+                        <circle cx="17" cy="7" r="0.6" fill="currentColor"></circle>
+                    </svg>
+                    <span id="instagramText">@I am maskaf</span>
+                </a>
+            </div>
+
+            <div class="actions">
+                <button class="btn" id="copyLink">Copier lien</button>
+                <button class="btn" id="themeToggle">Changer thème</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="section">
+                <h2>A propos</h2>
+                <p class="muted" id="about">Ici tu peux mettre un petit paragraphe qui parle de toi, ce que tu fais, tes
+                    passions, tes projets en cours, ou ce que tu aimerais réaliser.</p>
+            </div>
+
+            <div class="section cards">
+                <div class="card">
+                    <h3>Compétences</h3>
+                    <div class="skills" id="skills">
+                        <span class="chip">HTML</span>
+                        <span class="chip">CSS</span>
+                        <span class="chip">JavaScript</span>
+                        <span class="chip">React</span>
+                        <span class="chip">Figma</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Contact</h3>
+                    <p class="muted">Tu peux me contacter via Instagram ou par e‑mail : <strong
+                            id="email">ton.email@example.com</strong></p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Projets récents</h3>
+                <ul id="projects" class="muted">
+                    <li>Site vitrine pour un ami</li>
+                    <li>Petite appli météo en JS</li>
+                    <li>Mini-jeu en HTML/CSS</li>
+                </ul>
+            </div>
+
+            <footer>
+                <div id="footerText">© <span id="year"></span> Ton Prénom — Créé avec ❤️</div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // --- Configuration initiale ---
+        const config = {
+            name: 'josue Masengo',
+            role: 'Créateur · Étudiant · Passionné',
+            bio: "Salut ! Je crée des petits projets web et j'explore tout ce qui concerne le design et le son.",
+            instagram: 'i am maskaf',
+            email: 'joshkafuta816@gmail.com',
+            skills: ['HTML', 'CSS', 'JavaScript', 'Node.js']
+        };
+
+        // Appliquer la config au DOM
+        document.getElementById('name').textContent = config.name;
+        document.getElementById('role').textContent = config.role;
+        document.getElementById('bio').textContent = config.bio;
+        document.getElementById('about').textContent = config.bio;
+        document.getElementById('email').textContent = config.email;
+        document.getElementById('instagramLink').href = `https://instagram.com/${encodeURIComponent(config.instagram)}`;
+        document.getElementById('instagramText').textContent = '@' + config.instagram;
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // skills
+        const skillsEl = document.getElementById('skills');
+        skillsEl.innerHTML = '';
+        config.skills.forEach(s => {
+            const span = document.createElement('span');
+            span.className = 'chip';
+            span.textContent = s;
+            skillsEl.appendChild(span);
+        });
+
+        // copy link
+        document.getElementById('copyLink').addEventListener('click', async () => {
+            const url = document.getElementById('instagramLink').href;
+            try {
+                await navigator.clipboard.writeText(url);
+                alert('Lien Instagram copié !');
+            } catch (e) {
+                prompt('Copie ce lien:', url);
+            }
+        });
+
+        // theme toggle (dark/light)
+        let light = false;
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            light = !light;
+            if (light) {
+                document.documentElement.style.setProperty('--bg', '#f7f9fc');
+                document.documentElement.style.setProperty('--card', '#ffffff');
+                document.documentElement.style.setProperty('--muted', '#475569');
+                document.documentElement.style.setProperty('--accent', '#ff6b6b');
+                document.body.style.color = '#0b1220';
+                document.body.style.background = 'linear-gradient(180deg,#f8fafc 0%, #eef2ff 50%)';
+            } else {
+                document.documentElement.style.setProperty('--bg', '#0f1724');
+                document.documentElement.style.setProperty('--card', '#0b1220');
+                document.documentElement.style.setProperty('--muted', '#94a3b8');
+                document.body.style.color = '#e6eef8';
+                document.body.style.background = 'linear-gradient(180deg,#071024 0%, #081226 50%)';
+            }
+        });
+
+        // small fun: set initials in avatar
+        const avatar = document.getElementById('avatar');
+        const initials = config.name.split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase();
+        avatar.textContent = initials;
+
+        // allow quick editing from the page (for demo)
+        document.getElementById('name').addEventListener('dblclick', () => {
+            const val = prompt('Modifier ton nom:', config.name);
+            if (val) { config.name = val; document.getElementById('name').textContent = val; const parts = val.split(' '); avatar.textContent = parts.map(p => p[0] || '').slice(0, 2).join('').toUpperCase(); }
+        });
+    </script>
+</body>
+
+</html>
