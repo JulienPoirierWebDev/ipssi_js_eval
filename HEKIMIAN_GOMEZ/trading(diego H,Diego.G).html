@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Marché temporel</title>
+  <link rel="stylesheet" href="trading.css">
+</head>
+<body>
+
+  <h1>Marché Temporel</h1>
+  <p>Achète, vends et débloque les marchés des différentes époques !</p>
+
+  <p>
+    Marché actuel :
+    <select id="choixMarche" onchange="changerDeMarche()">
+      <option value="marché_médiéval">Médiéval</option>
+    </select>
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Objet</th>
+        <th>Prix</th>
+        <th>Quantité</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableau_marche"></tbody>
+  </table>
+
+  <p id="argent"> Argent : 100</p>
+  <p id="message"></p>
+
+  <script src="trading.js"></script>
+</body>
+</html>
