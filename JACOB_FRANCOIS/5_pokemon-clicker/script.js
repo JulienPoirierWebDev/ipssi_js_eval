@@ -15,6 +15,7 @@ soundMusicBg.volume = 0.4;
 let musicStarted = false;
 
 let parsedPoints = parseFloat(points.innerHTML);
+// pcc et pps ne sont pas des bons noms de variables. Utilise plutôt pointsParClic (ppc) et pointsParSeconde (pps). 
 let ppc = 1;
 let pps = 0;
 let inventaireCartes = [];
@@ -562,6 +563,7 @@ let toutesLesAmeliorations = [
   }
 ];
 
+// Ok, bravo pour les constantes en majuscules ! Ce sont des valeurs fixes qui ne changent pas durant le jeu. Un peu comme la gravité dans la vraie vie ;-)
 let PACK_COUT_BASE = 1000;
 let CARTES_PAR_PACK_BASE = 3; 
 
@@ -569,6 +571,7 @@ const navAmeliorations = document.querySelector('#ameliorations-nav-buttons');
 const navPacks = document.querySelector('#packs-de-cartes-nav-buttons');
 const navSucces = document.querySelector('#succes-nav-buttons');
 const navCombat = document.querySelector('#combat-nav-buttons');
+// Etrange packContainer pour un élement qui a l'id "upgrade-container"... Ce n'est pas méchang, je pense qu'au debut du dev, il ne servait qu'aux upgrades mais qu'avec les nouvelles fonctionnalités, il sert à plus de choses. Donc son nom n'est plus adapté. Cela nuit un peu à la lisibilité du code, surtout dans les fonctions où il est utilisé.
 const packContainer = document.querySelector('#upgrade-container'); 
 const conteneurAmeliorations = document.createElement('div');
 conteneurAmeliorations.classList.add('ameliorations'); 
@@ -588,6 +591,7 @@ function afficherAnimationClic(pointsGagnes, x, y) {
 
     document.body.appendChild(text);
 
+  // Cool !
     setTimeout(() => {
         text.remove();
     }, 1000);
@@ -599,6 +603,7 @@ function incrementation(event) {
         musicStarted = true;
     }
 
+    // Cette variable intermédiaire n'est pas nécessaire, vous pouvez directement utiliser ppc dans les calculs. C'est parce que le nomme de la variable n'est pas clair que vous avez fait ça, je pense.
     let pointsGagnes = ppc;
     parsedPoints += pointsGagnes;
     experience += pointsGagnes;
@@ -612,11 +617,13 @@ function incrementation(event) {
     const newSound = soundClick.cloneNode();
     newSound.play();
     
+    // cela évite un appel inutile à la fonction si on n'est pas sur l'onglet améliorations ! Et surement un bug d'affichage des coûts sinon.
     if (vueActive === 'ameliorations') {
         mettreAJourEtatBoutons(); 
     }
 }
 
+// On est d'accord, cette fonction ne sert a rien actuellement car navPacks n'a pas la classe 'hidden-tab' au départ ?
 function debloquerOngletPack() {
     if (navPacks) {
         navPacks.classList.remove('hidden-tab');
@@ -624,6 +631,7 @@ function debloquerOngletPack() {
 }
 
 function acheterAmeliorations(idAmeliorations) {
+    // aml : bof !
     const amelioration = toutesLesAmeliorations.find(aml => aml.id === idAmeliorations);
     if (!amelioration) return; 
 
@@ -638,6 +646,7 @@ function acheterAmeliorations(idAmeliorations) {
             soundPurchase.play();
         }
         
+        // Je pense que vous aviez prévu de faire des packs avec des niveaux de rareté différents, mais ce n'est pas implémenté. Donc cette partie ne sert à rien pour l'instant. Autant ne pas la mettre, cela alourdit le code inutilement.
         if (amelioration.type === 'deblocage-pack') {
             debloquerOngletPack();
         }
@@ -662,7 +671,8 @@ function mettreAJourEtatBoutons() {
         const id = bouton.dataset.id;
         const amelioration = toutesLesAmeliorations.find(aml => aml.id === id);
         
-        if (amelioration) {
+      if (amelioration) {
+          // Cette ligne de code est assez complexe, elle pourrait mériter une fonction dédiée pour plus de clarté.
             let coutActuel = Math.ceil(amelioration.cost * Math.pow(1.15, amelioration.owned));
             bouton.disabled = parsedPoints < coutActuel;
             bouton.querySelector('.cost').textContent = `Coût : ${coutActuel}`;
@@ -1061,53 +1071,67 @@ function ajouterCarte(pokedexId) {
     }
 }
 
+function creerElementCarte(item) {
+  const pokemon = pokemons.find(p => p.pokedex_id === item.id);
+  if (!pokemon) return;
+        
+  const cardDiv = document.createElement('div');
+  cardDiv.classList.add('pokemon-card');
+
+  const img = document.createElement('img');
+  img.src = pokemon.sprites.regular;
+  img.alt = pokemon.name.fr;
+  img.classList.add('pokemon-sprite');
+
+  const h3 = document.createElement('h3');
+  h3.textContent = `N°${pokemon.pokedex_id} ${pokemon.name.fr}`;
+        
+  const pRarity = document.createElement('p');
+  pRarity.textContent = `Rareté: ${pokemon.rareté}`;
+        
+  cardDiv.appendChild(img);
+  cardDiv.appendChild(h3);
+  cardDiv.appendChild(pRarity);
+
+  if (item.count > 1) {
+    const spanCount = document.createElement('span');
+    spanCount.classList.add('card-count');
+    spanCount.textContent = `x${item.count}`;
+    cardDiv.appendChild(spanCount);
+  }
+        
+  conteneurCartes.appendChild(cardDiv);
+}
+
+function créerConteneurCartesVide() {
+  const p = document.createElement('p');
+  p.style.color = '#ccc';
+  p.textContent = 'Votre collection est vide.';
+  conteneurCartes.appendChild(p);
+  return;
+}
 function afficherCartes() {
+  // Cette manière de vider un conteneur pourrait être remplacée par conteneurCartes.innerHTML = ''; qui est plus simple et plus rapide. A la lecture, on pourrait croire que le code fait quelque chose de plus complexe.
     while (conteneurCartes.firstChild) {
         conteneurCartes.removeChild(conteneurCartes.firstChild);
     }
 
-    if (inventaireCartes.length === 0) {
-        const p = document.createElement('p');
-        p.style.color = '#ccc';
-        p.textContent = 'Votre collection est vide.';
-        conteneurCartes.appendChild(p);
-        return;
+    if (inventaireCartes.length === 0) {
+    créerConteneurCartesVide();
+    return;
     }
 
     inventaireCartes.sort((a, b) => a.id - b.id);
 
-    inventaireCartes.forEach(item => {
-        const pokemon = pokemons.find(p => p.pokedex_id === item.id);
-        if (!pokemon) return; 
-        
-        const cardDiv = document.createElement('div');
-        cardDiv.classList.add('pokemon-card');
-
-        const img = document.createElement('img');
-        img.src = pokemon.sprites.regular;
-        img.alt = pokemon.name.fr;
-        img.classList.add('pokemon-sprite');
-
-        const h3 = document.createElement('h3');
-        h3.textContent = `N°${pokemon.pokedex_id} ${pokemon.name.fr}`;
-        
-        const pRarity = document.createElement('p');
-        pRarity.textContent = `Rareté: ${pokemon.rareté}`;
-        
-        cardDiv.appendChild(img);
-        cardDiv.appendChild(h3);
-        cardDiv.appendChild(pRarity);
-
-        if (item.count > 1) {
-            const spanCount = document.createElement('span');
-            spanCount.classList.add('card-count');
-            spanCount.textContent = `x${item.count}`;
-            cardDiv.appendChild(spanCount);
-        }
-        
-        conteneurCartes.appendChild(cardDiv);
+  // on peut faire une fonction pour afficher une carte
+  inventaireCartes.forEach(item => {
+          creerElementCarte(item);
     });
 }
+
+// Vous pourriez même automatiser le save et load avec des événements de la fenêtre, comme beforeunload et load.
+window.addEventListener('beforeunload', save);
+window.addEventListener('load', load);
 
 function save() {
     const donneesSauvegarde = {
@@ -1126,13 +1150,15 @@ function save() {
 
     try {
         localStorage.setItem('pokemonClickerSave', JSON.stringify(donneesSauvegarde));
-        alert("Jeu sauvegardé !");
+      //alert("Jeu sauvegardé !");
+      // Je commente les alerts de sauvegarde automatique car cela peut être gênant pour l'utilisateur.
     } catch (e) {
         console.error(e);
-        alert("Erreur lors de la sauvegarde.");
+        //alert("Erreur lors de la sauvegarde.");
     }
 }
 
+// Y'a encore moyen de créer des fonctions, notamment pour les améliorations, les succès, etc. Le code serait plus lisible et plus facile à maintenir.
 function load() {
     const savedData = localStorage.getItem('pokemonClickerSave');
     
@@ -1185,11 +1211,11 @@ function load() {
         verifierPassageNiveau(true);
         resetEquipeCombat();
 
-        alert("Jeu chargé avec succès !");
+        //alert("Jeu chargé avec succès !");
 
     } catch (e) {
         console.error(e);
-        alert("Erreur lors du chargement.");
+        //alert("Erreur lors du chargement.");
     }
 }
 
@@ -1212,7 +1238,7 @@ function verifierPassageNiveau(forceUpdate = false) {
     if (niveau >= 10 && navCombat) {
         navCombat.classList.remove('hidden-tab')
     }
-    
+   // Même remarque que pour les packs, navPacks n'a pas la classe 'hidden-tab' au départ, donc cette fonction ne sert à rien actuellement.
     if (niveau >= 10 && navPacks) {
         navPacks.classList.remove('hidden-tab')
     }
@@ -1254,6 +1280,7 @@ function verifierSucces() {
 
         let conditionRemplie = false;
 
+      // Sympa le switch ! On pourrait isoler chaque cas dans une fonction dédiée pour plus de clarté. Mais c'est déjà très bien comme ça.
         switch (succes.condition.type) {
             case 'clics':
                 conditionRemplie = statistiquesSucces.totalClics >= succes.condition.valeur;
@@ -1332,6 +1359,7 @@ function afficherInterfaceCombat() {
     const interfaceCombat = document.createElement('div');
     interfaceCombat.classList.add('combat-interface');
 
+  // Alors c'est naif comme question mais pour quoi ne pas avoir mis ce HTML directement dans le fichier HTML de base ? Ça éviterait de recréer tout ça à chaque fois qu'on veut afficher l'interface de combat.
     interfaceCombat.innerHTML = `
         <div class="combat-zone">
             <div class="combat-equipe">
@@ -1367,7 +1395,7 @@ function afficherInterfaceCombat() {
     const boutonCombat = document.querySelector('#lancer-combat-btn');
     const resultatDiv = document.querySelector('#combat-resultat');
     const grilleCollection = packContainer.querySelector('.combat-collection-grille');
-
+// Comme pour les autres élements dynamiques, on pourrait créer des fonctions pour générer ces parties de l'interface. Cela rendrait le code plus facile a lire. 
     if (inventaireCartes.length < 3) {
         resultatDiv.textContent = "Il te faut au moins 3 cartes pour combattre !";
         boutonCombat.disabled = true;
