@@ -41,6 +41,7 @@ const niveauxNoms = [
 ];
 
 let argent = 100;
+// malin !
 let niveau = 0;
 let marcheActuel = copieMarche(marche_medieval);
 let intervalId;
@@ -116,13 +117,10 @@ function creerBouton(texte) {
 	return bouton;
 }
 
-function renderMarket() {
-	while (tbody.firstChild) {
-		tbody.removeChild(tbody.firstChild);
-	}
-
-	for (let i = 0; i < marcheActuel.length; i++) {
-		const p = marcheActuel[i];
+function renderOneMarket(marché, parent) {
+	for (let i = 0; i < marché.length; i++) {
+		// j'aime pas trop les noms de variables composés d'une seule lettre. On ne sait jamais ce que ça représente.
+		const p = marché[i];
 		const tr = document.createElement('tr');
 
 		const tdNom = document.createElement('td');
@@ -141,27 +139,48 @@ function renderMarket() {
 
 		const boutonAcheter = creerBouton('Acheter');
 		if (argent < p.prix) boutonAcheter.disabled = true;
-		boutonAcheter.addEventListener('click', () => acheter(i));
+		boutonAcheter.addEventListener('click', () => acheter(marché, i));
 
 		const boutonVendre = creerBouton('Vendre');
 		if (p.quantité === 0) boutonVendre.disabled = true;
-		boutonVendre.addEventListener('click', () => vendre(i));
+		boutonVendre.addEventListener('click', () => vendre(marché,i));
 
 		tdActions.appendChild(boutonAcheter);
 		tdActions.appendChild(boutonVendre);
 		tr.appendChild(tdActions);
-		tbody.appendChild(tr);
+		parent.appendChild(tr);
 	}
 
-	updateArgent();
+
+
+}
+
+function renderMarket() {
+	tbody.textContent = '';
+	
+	renderOneMarket(marche_medieval, tbody);
+	
+	if (niveau > 0) {
+		renderOneMarket(marche_renaissance, tbody);
+	}
+	if (niveau > 1) {
+		renderOneMarket(marche_modernite, tbody);
+	} 
+	if (niveau > 2) {
+		renderOneMarket(marche_futuriste, tbody);
+	}
+	if (niveau > 3) {
+		renderOneMarket(marche_final, tbody);
+	}
+		updateArgent();
 	updateNiveau();
 }
 
-function acheter(i) {
-	const marchéActuel = marcheActuel[i];
-	if (argent >= marchéActuel.prix) {
-		marchéActuel.quantité = marchéActuel.quantité + 1;
-		argent = argent - marchéActuel.prix;
+function acheter(marché, i) {
+	const item = marché[i];
+	if (argent >= item.prix) {
+		item.quantité = item.quantité + 1;
+		argent = argent - item.prix;
 		renderMarket();
 		verifierDeblocage();
 	} else {
@@ -169,26 +188,49 @@ function acheter(i) {
 	}
 }
 
-function vendre(i) {
-	const marchéActuel = marcheActuel[i];
-	if (marchéActuel.quantité > 0) {
-		marchéActuel.quantité = marchéActuel.quantité - 1;
-		argent = argent + marchéActuel.prix;
+function vendre(marché, i) {
+	const item = marché[i];
+	if (item.quantité > 0) {
+		item.quantité = item.quantité - 1;
+		argent = argent + item.prix;
 		renderMarket();
 		verifierDeblocage();
 	}
 }
 
+function variationDesPrixDesMarchés() {
+		
+	variationDesPrixDUnMarché(marche_medieval);
+	
+	if (niveau > 0) {
+		variationDesPrixDUnMarché(marche_renaissance);
+	} 
+	if (niveau > 1) {
+		variationDesPrixDUnMarché(marche_modernite);
+	}
+	if (niveau > 2) {
+		variationDesPrixDUnMarché(marche_futuriste);
+	}
+	if (niveau > 3) {
+		variationDesPrixDUnMarché(marche_final);
+	}
+}
+
+function variationDesPrixDUnMarché(marché) {
+	// Ce morceau de code n'est pas trés clair. Les noms des variables pourraient être améliorés.
+	for (let i = 0; i < marché.length; i++) {
+		const v = Math.floor(Math.random() * 11) - 5;
+		let np = marché[i].prix + v;
+		if (np < 1) np = 1;
+		marché[i].prix = np;
+	}
+}
+
 function demarrerVariationPrix() {
 	if (intervalId) clearInterval(intervalId);
-
+	
 	intervalId = setInterval(() => {
-		for (let i = 0; i < marcheActuel.length; i++) {
-			const v = Math.floor(Math.random() * 11) - 5;
-			let np = marcheActuel[i].prix + v;
-			if (np < 1) np = 1;
-			marcheActuel[i].prix = np;
-		}
+		variationDesPrixDesMarchés();
 		renderMarket();
 	}, 2000);
 }
@@ -197,6 +239,7 @@ function verifierDeblocage() {
 	afficherBoutonDeblocage();
 }
 
+// Ce qui est dommage ici c'est que les objets achetés au niveau précédent sont perdus, on ne les garde pas. Donc soit vous les vendez automatiquement avant de débloquer le niveau suivant, soit vous faites en sortes que l'on puisse les garder pour les revendre plus tard.
 function debloquerNiveau() {
 	if (niveau === 0 && argent >= 200) {
 		clearInterval(intervalId);
