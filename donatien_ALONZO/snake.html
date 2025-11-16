@@ -4,9 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Snake - tp cours (20x20)</title>
+  <!-- Il n'est pas hyper lisible de CSS : pas de saut de ligne entre les règles, pas d'espace entre les selecteurs.  Niveau maintenance, c'est plus difficile de s'y retrouver. -->
   <style>
-    :root{--cell-size:22px}
-    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:20px;background:#111;color:#eee;display:flex;gap:20px}
+    :root{
+      --cell-size:22px
+    }
+    body {
+      font-family:system-ui,Segoe UI,Roboto,Arial;
+      margin:20px;
+      background:#111;
+      color:#eee;
+      display:flex;
+      gap:20px
+    }
     .container{display:flex;flex-direction:column;gap:12px;position:relative}
     h1{font-size:18px;margin:0}
     #game{width:calc(var(--cell-size)*20);height:calc(var(--cell-size)*20);display:grid;grid-template-columns:repeat(20,1fr);grid-template-rows:repeat(20,1fr);background:#0b0b0b;border:4px solid #222;position:relative}
@@ -47,18 +57,25 @@
     const TICK_MS = 300; 
 
     const game = document.getElementById('game');
+    // Oh non, des abbreviations dans les noms de variables ! Essayer de dire a l'oral tous ces noms de variables.
     const scoreEl = document.getElementById('score');
+    // startBétéhenne
     const startBtn = document.getElementById('startBtn');
+    // pauseBétéhenne
     const pauseBtn = document.getElementById('pauseBtn');
+    // resetBétéhenne
     const resetBtn = document.getElementById('resetBtn');
     const speedLabel = document.getElementById('speedLabel');
     const gameOverScreen = document.getElementById('game-over');
     const finalScoreEl = document.getElementById('final-score');
+    // restartBétéhenne
     const restartBtn = document.getElementById('restartBtn');
 
     const cells = [];
+    // On tolère les variables avec un nom en une seule lettre pour les boucles imbriquées, toutefois ce n'est pas le plus lisible.
     for(let y=0;y<ROWS;y++){
       for(let x=0;x<COLS;x++){
+        // Si d est une cellule, cell, pourquoi ne pas l'appeler cell ? Ou oneCell ?
         const d = document.createElement('div');
         d.className = 'cell';
         d.dataset.x = x; d.dataset.y = y;
@@ -77,18 +94,31 @@
     let nextDirection = { ...direction };
 
     let food = null;
-    function placeFood(){
+
+    function getEmptyCells(){
       const free = [];
       for(let y=0;y<ROWS;y++) for(let x=0;x<COLS;x++){
         if(!snake.some(s => s.x===x && s.y===y)) free.push({x,y});
       }
+      return free;
+    }
+
+    function placeFood(){
+      // Alors c'est malin car vous identifiez les cellules libres. Mais il a fallut que je lise attentivement le code pour comprendre ce que cela fait. On va donc améliorer cela. 
+      const free = getEmptyCells();
+      // A quoi sert ce test ? Est-ce que la tête du serpent peut sortir de la grille ?
       if(free.length===0){ food = null; return; }
       food = free[Math.floor(Math.random()*free.length)];
     }
 
-    function render(){
+    function cleanCells(){
       cells.forEach(c => c.classList.remove('snake','head','food'));
+    }
+
+    function render(){
+      cleanCells();
       for(let i=0;i<snake.length;i++){
+        // Vous tombez dans l'enfer du dev : des variables avec des noms pas clairs, des abbréviations, et un code peu lisible.Ce code ne peut pas se lire a haute voix.
         const s = snake[i];
         const el = cellAt(s.x,s.y);
         if(!el) continue;
@@ -96,6 +126,7 @@
         if(i===0) el.classList.add('head');
       }
       if(food){
+        // Ca me parait bien compliqué avec cellAt.
         const f = cellAt(food.x, food.y);
         if(f) f.classList.add('food');
       }
@@ -131,7 +162,9 @@
       }
       snake.unshift(head);
       if(food && head.x===food.x && head.y===food.y){
-        score += 1; scoreEl.textContent = score;
+        // Attention a bien sauter des lignes entre les instructions pour améliorer la lisibilité.
+        score += 1;
+        scoreEl.textContent = score;
         placeFood();
       } else {
         snake.pop();
@@ -140,7 +173,8 @@
     }
 
     function gameOver(){
-      clearInterval(tickInterval); tickInterval = null;
+      clearInterval(tickInterval); 
+      tickInterval = null;
       finalScoreEl.textContent = `Game Over — Score final : ${score}`;
       gameOverScreen.style.visibility = 'visible';
     }
@@ -157,7 +191,8 @@
     function reset(){
       pause();
       snake = [ {x:10, y:10}, {x:9, y:10}, {x:8, y:10} ];
-      direction = {x:1,y:0}; nextDirection = {...direction};
+      direction = {x:1,y:0}; 
+      nextDirection = {...direction}; // faites attention a bien sauter des lignes entre les instructions.
       score = 0; scoreEl.textContent = score;
       placeFood();
       render();
