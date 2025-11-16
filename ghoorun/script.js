@@ -1,0 +1,233 @@
+const marche_medieval = [
+	{ nom: 'Potion', prix: 10, quantité: 0 },
+	{ nom: 'Epee', prix: 50, quantité: 0 },
+	{ nom: 'Bouclier', prix: 40, quantité: 0 },
+	{ nom: 'Herbe', prix: 5, quantité: 0 },
+	{ nom: 'Elixir', prix: 100, quantité: 0 },
+];
+
+const marche_renaissance = [
+	{ nom: 'Pistolet', prix: 70, quantité: 0 },
+	{ nom: 'Armure', prix: 120, quantité: 0 },
+	{ nom: 'Carte', prix: 30, quantité: 0 },
+	{ nom: 'Boussole', prix: 25, quantité: 0 },
+	{ nom: 'Tonneau', prix: 200, quantité: 0 },
+];
+
+const marche_modernite = [
+	{ nom: 'Smartphone', prix: 300, quantité: 0 },
+	{ nom: 'Ordinateur', prix: 800, quantité: 0 },
+	{ nom: 'Drone', prix: 150, quantité: 0 },
+	{ nom: 'Casque VR', prix: 400, quantité: 0 },
+	{ nom: 'Imprimante 3D', prix: 600, quantité: 0 },
+];
+
+const marche_futuriste = [
+	{ nom: 'Teleporteur', prix: 5000, quantité: 0 },
+	{ nom: 'Robot domestique', prix: 3000, quantité: 0 },
+	{ nom: 'Exosquelette', prix: 4000, quantité: 0 },
+	{ nom: 'Nanorobots', prix: 2000, quantité: 0 },
+	{ nom: 'Source energie', prix: 10000, quantité: 0 },
+];
+
+const marche_final = [{ nom: 'Objet Mystere', prix: 9999, quantité: 0 }];
+
+const niveauxNoms = [
+	'Médiéval',
+	'Renaissance',
+	'Modernité',
+	'Futuriste',
+	'Mystère',
+];
+
+let argent = 100;
+let niveau = 0;
+let marcheActuel = copieMarche(marche_medieval);
+let intervalId;
+
+const tbody = document.getElementById('market');
+const affichageArgent = document.getElementById('money');
+const affichageNiveau = document.getElementById('niveau-nom');
+const deblocageZone = document.getElementById('deblocage-zone');
+
+function copieMarche(source) {
+	return source.map((objet) => ({
+		nom: objet.nom,
+		prix: objet.prix,
+		quantité: objet.quantité,
+	}));
+}
+
+function updateArgent() {
+	affichageArgent.textContent = '💵 Argent : ' + argent;
+}
+
+function updateNiveau() {
+	affichageNiveau.textContent = niveauxNoms[niveau];
+	afficherBoutonDeblocage();
+}
+
+function afficherBoutonDeblocage() {
+	deblocageZone.textContent = '';
+
+	let coutDeblocage, bonusDeblocage, prochainNom;
+
+	if (niveau === 0) {
+		coutDeblocage = 200;
+		bonusDeblocage = 100;
+		prochainNom = 'Renaissance';
+	} else if (niveau === 1) {
+		coutDeblocage = 1000;
+		bonusDeblocage = 500;
+		prochainNom = 'Modernité';
+	} else if (niveau === 2) {
+		coutDeblocage = 5000;
+		bonusDeblocage = 2000;
+		prochainNom = 'Futuriste';
+	} else if (niveau === 3) {
+		coutDeblocage = 9999;
+		bonusDeblocage = 0;
+		prochainNom = 'Mystère';
+	} else {
+		return;
+	}
+
+	const bouton = document.createElement('button');
+	bouton.style.padding = '0.5rem 1rem';
+	bouton.style.fontSize = '1rem';
+	bouton.textContent = `🔓 Débloquer ${prochainNom} (${coutDeblocage} 💵)`;
+
+	if (bonusDeblocage > 0) {
+		bouton.textContent += ` +${bonusDeblocage} 🎁`;
+	}
+
+	if (argent < coutDeblocage) {
+		bouton.disabled = true;
+		bouton.textContent = `🔒 ${prochainNom} (${coutDeblocage} 💵)`;
+	}
+
+	bouton.addEventListener('click', () => debloquerNiveau());
+	deblocageZone.appendChild(bouton);
+}
+
+function creerBouton(texte) {
+	const bouton = document.createElement('button');
+	bouton.textContent = texte;
+	return bouton;
+}
+
+function renderMarket() {
+	while (tbody.firstChild) {
+		tbody.removeChild(tbody.firstChild);
+	}
+
+	for (let i = 0; i < marcheActuel.length; i++) {
+		const p = marcheActuel[i];
+		const tr = document.createElement('tr');
+
+		const tdNom = document.createElement('td');
+		tdNom.textContent = p.nom;
+		tr.appendChild(tdNom);
+
+		const tdPrix = document.createElement('td');
+		tdPrix.textContent = p.prix + ' 💵';
+		tr.appendChild(tdPrix);
+
+		const tdQuantité = document.createElement('td');
+		tdQuantité.textContent = p.quantité;
+		tr.appendChild(tdQuantité);
+
+		const tdActions = document.createElement('td');
+
+		const boutonAcheter = creerBouton('Acheter');
+		if (argent < p.prix) boutonAcheter.disabled = true;
+		boutonAcheter.addEventListener('click', () => acheter(i));
+
+		const boutonVendre = creerBouton('Vendre');
+		if (p.quantité === 0) boutonVendre.disabled = true;
+		boutonVendre.addEventListener('click', () => vendre(i));
+
+		tdActions.appendChild(boutonAcheter);
+		tdActions.appendChild(boutonVendre);
+		tr.appendChild(tdActions);
+		tbody.appendChild(tr);
+	}
+
+	updateArgent();
+	updateNiveau();
+}
+
+function acheter(i) {
+	const marchéActuel = marcheActuel[i];
+	if (argent >= marchéActuel.prix) {
+		marchéActuel.quantité = marchéActuel.quantité + 1;
+		argent = argent - marchéActuel.prix;
+		renderMarket();
+		verifierDeblocage();
+	} else {
+		alert("Tu peu pas t'es pauvre.🤣");
+	}
+}
+
+function vendre(i) {
+	const marchéActuel = marcheActuel[i];
+	if (marchéActuel.quantité > 0) {
+		marchéActuel.quantité = marchéActuel.quantité - 1;
+		argent = argent + marchéActuel.prix;
+		renderMarket();
+		verifierDeblocage();
+	}
+}
+
+function demarrerVariationPrix() {
+	if (intervalId) clearInterval(intervalId);
+
+	intervalId = setInterval(() => {
+		for (let i = 0; i < marcheActuel.length; i++) {
+			const v = Math.floor(Math.random() * 11) - 5;
+			let np = marcheActuel[i].prix + v;
+			if (np < 1) np = 1;
+			marcheActuel[i].prix = np;
+		}
+		renderMarket();
+	}, 2000);
+}
+
+function verifierDeblocage() {
+	afficherBoutonDeblocage();
+}
+
+function debloquerNiveau() {
+	if (niveau === 0 && argent >= 200) {
+		clearInterval(intervalId);
+		argent = argent - 200 + 100;
+		niveau = 1;
+		marcheActuel = copieMarche(marche_renaissance);
+		renderMarket();
+		demarrerVariationPrix();
+	} else if (niveau === 1 && argent >= 1000) {
+		clearInterval(intervalId);
+		argent = argent - 1000 + 500;
+		niveau = 2;
+		marcheActuel = copieMarche(marche_modernite);
+		renderMarket();
+		demarrerVariationPrix();
+	} else if (niveau === 2 && argent >= 5000) {
+		clearInterval(intervalId);
+		argent = argent - 5000 + 2000;
+		niveau = 3;
+		marcheActuel = copieMarche(marche_futuriste);
+		renderMarket();
+		demarrerVariationPrix();
+	} else if (niveau === 3 && argent >= 9999) {
+		clearInterval(intervalId);
+		argent = argent - 9999;
+		niveau = 4;
+		marcheActuel = copieMarche(marche_final);
+		renderMarket();
+		alert('🎉🎉🎉 BRAVO ! TU AS GAGNÉ ! 🎉🎉🎉');
+	}
+}
+
+renderMarket();
+demarrerVariationPrix();
