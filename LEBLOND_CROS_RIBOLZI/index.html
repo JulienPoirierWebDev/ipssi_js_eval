@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Clicker Pokémon</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <video id="background-video" autoplay muted loop playsinline>
+    <source src="images/FondPokemon.mp4" type="video/mp4">
+  </video>
+  
+  <div class="header-controls">
+    <div class="tab-buttons">
+      <button class="tab-select active" data-tab="0">🎯 Clicker</button>
+      <button class="tab-select" data-tab="1">🎴 Pokédex</button>
+      <button class="tab-select" data-tab="2">⚔️ Combat</button>
+        <button class="tab-select" data-tab="3">🏆 Succès</button>
+    </div>
+    <div class="level-display">
+      <p class="level-info">⭐ Niveau : <span id="player-level">1</span></p>
+      <div class="xp-bar-container">
+        <div class="xp-bar" id="xp-bar"></div>
+        <span class="xp-text" id="xp-text">0 / 100</span>
+      </div>
+      <div id="level-status" class="level-status">Dresseur débutant</div>
+    </div>
+    <div class="points-lang-wrapper">
+      <p class="points-display">Pokédollars : <span id="points">0</span>💰</p>
+      <p class="playtime-display">⏱️ Temps : <span id="playtime">00:00:00</span></p>
+      <div class="lang-select-wrap">
+        <label for="lang-select" class="visually-hidden">Langue</label>
+        <select id="lang-select" aria-label="Choisir la langue">
+          <option value="fr">Français</option>
+          <option value="en">Anglais</option>
+          <option value="jp">Japonais</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="audio-controls">
+    <div class="volume-control">
+      <label for="bgm-volume" title="Volume musique de fond">🎵</label>
+      <input type="range" id="bgm-volume" min="0" max="100" value="30" orient="vertical">
+      <span id="bgm-value">30</span>
+    </div>
+    <div class="volume-control">
+      <label for="sfx-volume" title="Volume effets sonores">🔊</label>
+      <input type="range" id="sfx-volume" min="0" max="100" value="60" orient="vertical">
+      <span id="sfx-value">60</span>
+    </div>
+    <button id="toggle-audio" class="audio-toggle-btn" title="Muet/Son">🔇</button>
+  </div>
+
+  <div class="tabs-container">
+    <div class="tab-content active" id="clicker-tab">
+      <h2>Clickez !</h2>
+      <div class="clicker-center">
+        <img id="clickBtn" class="clickable-image" src="images/Pokebola-pokeball-png-0.png" alt="Clicker image" />
+      </div>
+      <h3>Améliorations</h3>
+      <div id="upgrades"></div>
+    </div>
+
+    <div class="tab-content" id="cards-tab">
+      <h2>Cartes Pokémon</h2>
+      <div class="booster-container" id="booster-controls"></div>
+      <div id="pokedex-sort-controls">
+        <button id="sort-rarity-btn" title="Trier par rareté (du plus rare au plus commun)">Trier rareté ↓</button>
+      </div>
+      <div id="cards"></div>
+    </div>
+
+    <div class="tab-content" id="battle-tab">
+      <h2>Combat de Pokémon</h2>
+      <div id="team-selection">
+        <h3>Sélectionnez votre équipe</h3>
+        <div class="team-slots">
+          <div class="team-slot" data-slot="0">
+            <img class="team-slot-image" style="display: none;" alt="Pokemon">
+            <p class="team-slot-name">Slot 1</p>
+          </div>
+          <div class="team-slot" data-slot="1">
+            <img class="team-slot-image" style="display: none;" alt="Pokemon">
+            <p class="team-slot-name">Slot 2</p>
+          </div>
+          <div class="team-slot" data-slot="2">
+            <img class="team-slot-image" style="display: none;" alt="Pokemon">
+            <p class="team-slot-name">Slot 3</p>
+          </div>
+        </div>
+        <button id="start-battle-btn">Commencer le combat</button>
+      </div>
+      <div id="battle-screen" style="display: none;"></div>
+    </div>
+
+    <div class="tab-content" id="achievements-tab">
+      <h2>Succès</h2>
+      <div id="achievements-container"></div>
+    </div>
+  </div>    
+
+  <button id="reset-btn" class="reset-btn" title="Réinitialiser la progression">♻️ Réinitialiser</button>
+
+  <script src="5_pokemon-clicker/5_pokemon-clicker/data.js"></script>
+  <script>
+    // Pont de compatibilité: expose les données du Pokédex à l'espace global attendu par les modules
+    try { window.pokemonDataDB = (typeof pokemons !== 'undefined') ? pokemons : []; } catch (e) { window.pokemonDataDB = []; }
+  </script>
+  
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
