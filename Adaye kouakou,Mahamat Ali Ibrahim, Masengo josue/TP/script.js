@@ -1,4 +1,4 @@
-
+// ce n'est pas du javascript mais du java :-(
 class DevineNombre {
     static main(String) {
         // Générer un nombre aléatoire entre 0 et 100
