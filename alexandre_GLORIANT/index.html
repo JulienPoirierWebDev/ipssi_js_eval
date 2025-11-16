@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Jeu de dés - version avancée</title>
+		<style>
+			body {
+				font-family: system-ui, sans-serif;
+				background: #0f1115;
+				color: #f5f5f5;
+				text-align: center;
+				padding: 2rem;
+			}
+			h1 {
+				color: #f39c12;
+			}
+			h2 {
+				color: #f39c12;
+			}
+			h3 {
+				color: #f39c12;
+			}
+			button {
+				padding: 0.5rem 1rem;
+				margin: 1rem;
+				border: none;
+				background: #f39c12;
+				color: #000;
+				font-weight: bold;
+				border-radius: 6px;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			button:hover {
+				background: #d5890f;
+			}
+			#scores {
+				display: flex;
+				justify-content: center;
+				gap: 2rem;
+				margin-bottom: 1rem;
+			}
+			.player {
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				border-radius: 8px;
+				padding: 1rem;
+				width: 180px;
+				background: rgba(255, 255, 255, 0.05);
+			}
+			.active {
+				outline: 2px solid #7affc6;
+			}
+			.dice {
+				font-size: 2rem;
+				margin-top: 0.5rem;
+			}
+			#roundResult {
+				margin-top: 1rem;
+				font-size: 1.1rem;
+				color: #7affc6;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>🎲 Jeu de dés — version avancée</h1>
+
+		<div id="scores">
+			<div class="player" id="player1">
+				<p><strong>Joueur 1</strong></p>
+				<p>Score total : <span id="p1-total">0</span></p>
+				<p>Score du tour : <span id="p1-round">0</span></p>
+				<div class="dice" id="p1-dice">⚀</div>
+			</div>
+
+			<div class="player" id="player2">
+				<p><strong>Joueur 2</strong></p>
+				<p>Score total : <span id="p2-total">0</span></p>
+				<p>Score du tour : <span id="p2-round">0</span></p>
+				<div class="dice" id="p2-dice">⚀</div>
+			</div>
+		</div>
+
+		<button id="roll">Lancer le dé 🎲</button>
+		<button id="hold">Garder le score 💰</button>
+
+		<p id="roundResult"></p>
+		<h2>Save à 29 et tu verras</h2>
+		<h3>First shot tu fais trente t'es un vrai chef</h3>
+		<script src="script.js"></script>
+	</body>
+</html>
