@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Jeu d'achat/vente</title>
+<style>
+
+			body {
+
+				font-family: sans-serif;
+
+				background: #0f1115;
+
+				color: #f5f5f5;
+
+				padding: 2rem;
+
+				text-align: center;
+
+			}
+
+			h1 {
+
+				color: #f39c12;
+
+			}
+
+			table {
+
+				margin: 1rem auto;
+
+				border-collapse: collapse;
+
+			}
+
+			td,
+
+			th {
+
+				padding: 0.5rem 1rem;
+
+				border: 1px solid rgba(255, 255, 255, 0.2);
+
+			}
+
+			button {
+
+				background: #f39c12;
+
+				border: none;
+
+				padding: 0.3rem 0.6rem;
+
+				margin: 0.2rem;
+
+				border-radius: 4px;
+
+				cursor: pointer;
+
+			}
+
+			button:hover {
+
+				background: #d5890f;
+
+			}
+</style>
+</head>
+<body>
+<h1>💰 Marché fluctuant</h1>
+<p>Achète et vends au bon moment !</p>
+<table>
+<thead>
+<tr>
+<th>Objet</th>
+<th>Prix</th>
+<th>Quantité</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="market"></tbody>
+</table>
+<p id="money"> Argent : 100</p>
+<script src="trade.js"></script>
+</body>
+</html>
+ 
