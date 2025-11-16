@@ -1,5 +1,5 @@
 
-let argent = 100;
+let argent = 100000;
 
 
 const marché_médiéval = [
@@ -35,37 +35,50 @@ const marché_futuriste = [
 ];
 
 const marché_final = [{ name: 'Objet Mystère', price: 9999, qty: 0 }];
+// avoir un tableau de marché débloqué au lieu d'une variable marché actuel
+//let marché_actuel = marché_médiéval;
+// Cela permet de garder la totalité des marchés dans une variable qui ne contient que ceux débloqués
+const marchés_débloqués = [marché_médiéval];
 
-
-let marché_actuel = marché_médiéval;
-
-
-function renderMarket() {
-  const tbody = document.getElementById('market');
-  tbody.innerHTML = ''; 
-
-  marché_actuel.forEach((item, index) => {
-    const tr = document.createElement('tr');
-
+function renderItem(item, index, parent) {
+  const tr = document.createElement('tr');
+  // les onclick dans le HTML, c'est pas top, mieux vaut faire des addEventListener en JS
     tr.innerHTML = `
       <td>${item.name}</td>
       <td>${item.price}💲</td>
       <td>${item.qty}</td>
       <td>
-        <button onclick="acheter(${index})">Acheter</button>
-        <button onclick="vendre(${index})">Vendre</button>
+        <button class="btn-acheter">Acheter</button>
+        <button class="btn-vendre">Vendre</button>
       </td>
     `;
+  
+  const btnAcheter = tr.querySelector('.btn-acheter');
+  const btnVendre = tr.querySelector('.btn-vendre');
 
-    tbody.appendChild(tr);
+  btnAcheter.addEventListener('click', () => acheter(item));
+  btnVendre.addEventListener('click', () => vendre(item));
+
+  parent.appendChild(tr);
+}
+
+function renderMarket() {
+  const tbody = document.getElementById('market');
+  tbody.innerHTML = ''; 
+
+  for (const marché of marchés_débloqués) {
+      marché.forEach((item, index) => {
+    renderItem(item, index, tbody);
   });
+  }
+
+
 
   document.getElementById('money').innerText = ` Argent : ${argent}`;
 }
 
 
-function acheter(index) {
-  const item = marché_actuel[index];
+function acheter(item) {
   if (argent >= item.price) {
     argent -= item.price;
     item.qty++;
@@ -73,46 +86,51 @@ function acheter(index) {
     alert("Pas assez d'argent !");
   }
   renderMarket();
+  // Vous faites le checkMarché ici alors que forcement, après un achat, on ne peut pas avoir plus d'argent qu'avant l'achat, donc on ne devrait jamais débloquer un marché après un achat
   checkMarché();
 }
 
 
-function vendre(index) {
-  const item = marché_actuel[index];
+function vendre(item) {
   if (item.qty > 0) {
     item.qty--;
     argent += item.price;
   }
+  // A l'inverse, il manque checkMarché ici, car après une vente, on peut potentiellement avoir assez d'argent pour débloquer un marché
   renderMarket();
 }
 
 
 setInterval(() => {
-  marché_actuel.forEach(item => {
+  for (const marché of marchés_débloqués) {
+      marché.forEach(item => {
     const variation = Math.floor(Math.random() * 11) - 5; 
     item.price = Math.max(1, item.price + variation); 
   });
+  }
+
   renderMarket();
 }, 2000);
 
 
 function checkMarché() {
-  if (argent > 300 && marché_actuel === marché_médiéval) {
+  // checkMarché débloque un marché mais après, on ne peut pas revenir en arrière. Que deviennent les objets achetés dans les marchés précédents ? Soit il faut les vendre automatiquement, soit il faut les garder mais dans ce cas, il faut permettre de revenir en arrière dans les marchés.
+  if (argent > 300 && marchés_débloqués.length === 1) {
     alert(' Marché Renaissance débloqué !');
-    marché_actuel = marché_renaissance;
-  } else if (argent > 1000 && marché_actuel === marché_renaissance) {
+    marchés_débloqués.push(marché_renaissance);
+  } else if (argent > 1000 && marchés_débloqués.length === 2) {
     alert(' Marché Modernité débloqué !');
-    marché_actuel = marché_modernité;
-  } else if (argent > 5000 && marché_actuel === marché_modernité) {
+    marchés_débloqués.push(marché_modernité);
+  } else if (argent > 5000 && marchés_débloqués.length === 3) {
     alert(' Marché Futuriste débloqué !');
-    marché_actuel = marché_futuriste;
-  } else if (argent > 10000 && marché_actuel === marché_futuriste) {
+    marchés_débloqués.push(marché_futuriste);
+  } else if (argent > 10000 && marchés_débloqués.length === 4) {
     alert(' Marché Final débloqué !');
-    marché_actuel = marché_final;
+    marchés_débloqués.push(marché_final);
   }
 
   
-  if (marché_actuel === marché_final && marché_actuel[0].qty > 0) {
+  if (marchés_débloqués.length === 5 && marché_final[0].qty > 0) {
     alert(' Bravo ! Tu as acheté l’objet mystère et gagné le jeu !');
   }
 
