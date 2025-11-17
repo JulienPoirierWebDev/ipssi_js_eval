@@ -195,6 +195,7 @@ function initializeClicker() {
  */
 function startPeriodicChecks() {
   // Vérification des succès toutes les 30 secondes
+  // Peut être faire une constant en haut du fichier pour l'intervalle ? Cela faciliterait la modification future.
   setInterval(() => {
     const hasNewAchievements = checkAchievements(gameState, pokemons);
     if (hasNewAchievements) {
@@ -204,6 +205,7 @@ function startPeriodicChecks() {
   }, 30000);
   
   // Sauvegarde automatique toutes les 5 minutes
+  // On pourrait aussi utiliser l'événement 'beforeunload' pour sauvegarder à la fermeture de l'onglet.
   setInterval(() => {
     saveProgress(gameState);
   }, 300000);
@@ -226,6 +228,11 @@ function startPeriodicChecks() {
     }
   }, 1000);
 }
+
+// beforeunload pour sauvegarder à la fermeture de l'onglet
+window.addEventListener('beforeunload', () => {
+  saveProgress(gameState);
+});
 
 /**
  * Callback pour la montée de niveau
@@ -351,6 +358,7 @@ function initializeBoosterSystem() {
 /**
  * Gère les victoires en combat
  */
+// Pourquoi il n'est pas dans combat.js ?
 function handleVictory(xpGain) {
   console.log(`🏆 Victoire ! Appel de gainXP avec ${xpGain} XP`);
   gainXP(xpGain, gameState, onLevelUp);
@@ -410,6 +418,7 @@ function getOwnedCardsList() {
  * Séquence: ↑ ↑ ↓ ↓ ← → ← → B A
  * Effet: +1 000 000 points, mise à jour UI et sauvegarde (aucun affichage).
  */
+// Pourquoi il n'a pas son module dédié ? aha 
 function initializeKonamiCode() {
   const sequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
   let index = 0;
