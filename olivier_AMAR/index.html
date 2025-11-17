@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Clicker Pokémon</title>
+		<script src="data.js"></script>
+		<script src="script.js" defer></script>
+		<style>
+			body {
+      			background-image: url('assets/pictures/background.png'); 
+      			background-size: cover; 
+      			background-position: center; 
+      			background-repeat: no-repeat; 
+      			height: 100vh; 
+      			margin: 0; 
+    		}
+			h1 {
+				color: #f39c12;
+			}
+			button {
+				background: #f39c12;
+				color: #000;
+				font-weight: bold;
+				border: none;
+				border-radius: 6px;
+				padding: 0.5rem 1rem;
+				margin: 0.3rem;
+				cursor: pointer;
+			}
+			button:hover {
+				background: #d5890f;
+			}
+			#cards img {
+				width: 80px;
+				margin: 5px;
+				border-radius: 8px;
+			}
+			.pixelText {
+    			font-family: 'Press Start 2P', monospace;
+    			font-size: 30px;
+    			color: white;
+    			position: absolute;
+    			top: 30%;
+    			left: 50%;
+    			transform: translate(-50%, -50%);
+    			text-align: center;
+    			image-rendering: pixelated;
+    			-webkit-font-smoothing: none;
+    			animation: blink 0.4s infinite alternate;
+				}
+				.pixelTextblack {
+    			font-family: 'Press Start 2P', monospace;
+    			font-size: 30px;
+    			color: rgb(0, 0, 0);
+    			position: absolute;
+    			top: 30%;
+    			left: 50%;
+    			transform: translate(-50%, -50%);
+    			text-align: center;
+    			image-rendering: pixelated;
+    			-webkit-font-smoothing: none;
+				}
+
+
+			.pixelbaseText {
+    			font-family: 'Press Start 2P', monospace;
+    			font-size: 35px;
+    			color: white;
+    			position: absolute;
+    			top: 10%;
+    			left: 50%;
+    			transform: translate(-50%, -50%);
+    			text-align: center;
+    			image-rendering: pixelated;
+    			-webkit-font-smoothing: none;
+			}
+
+			@keyframes blink {
+    			from { opacity: 1; }
+    			to { opacity: 0.4; }
+			}
+
+		</style>
+		<script src="./data.js" defer></script>
+		<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+	</head>
+	<body>
+	</body>
+</html>
