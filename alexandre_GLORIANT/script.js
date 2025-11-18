@@ -141,7 +141,9 @@ function mettreAJourAffichage() {
 
 //48
 function afficherGifDefaite() {
-  //49
+  //49 - Je pense que vous vouliez me montrer que vous êtes a l'aise avec la creation d'elements DOM
+  // Donc pas de problème, toutefois dans la vraie vie, on utiliserait plutot une modale deja presente dans le HTML et on ajouterait/retirerait une classe pour la montrer/cacher.
+  // Cela rendrait le JS plus simple.
   const gifContainer = document.createElement("div");
   gifContainer.style.position = "fixed";
   gifContainer.style.top = "50%";
@@ -274,7 +276,7 @@ boutonGarder.addEventListener("click", function () {
 
       mettreAJourAffichage();
     } else if (scoreActuel >= 26 && scoreActuel < 29) {
-      //56
+      //56 Très sympa cette subtile incitation à prendre des risques !
       zoneMessage.textContent = `Ouh, ca devient interessant là ! Joueur ${joueurActif} a maintenant ${scoreActuel} points. Au tour du Joueur ${
         joueurActif === 1 ? 2 : 1
       }.`;
