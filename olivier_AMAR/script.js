@@ -16,6 +16,7 @@ let todayday =0
 
 const contratdetravail = document.createElement("img");
 contratdetravail.src = "assets/pictures/contratdetravail.png";
+// Pensez a faire une classe pour le style, ça sera plus simple a gerer
 contratdetravail.style.width = "17%"; 
 contratdetravail.style.position = "absolute";
 contratdetravail.style.top = "50%";
@@ -25,6 +26,7 @@ contratdetravail.style.transform = "translate(-50%, -50%)";
 
 const boosterpokemonimage = document.createElement("img");
 boosterpokemonimage.src = "assets/pictures/boosterpkm.png";
+// idem pour le style
 boosterpokemonimage.style.width = "10%"; 
 boosterpokemonimage.style.position = "absolute";
 boosterpokemonimage.style.top = "50%";
@@ -67,7 +69,8 @@ let playerdata = {// les données du joueur
 
 const money = document.createElement("div");
 money.id = "moneyDisplay";
-money.textContent = playerdata.money+"$"; 
+money.textContent = playerdata.money + "$"; 
+// des classes !
 money.style.position = "absolute";
 money.style.top = "10px";
 money.style.left = "10px";
@@ -81,6 +84,7 @@ document.body.appendChild(money);
 
 const nbrboosterposseder = document.createElement("div");
 nbrboosterposseder.id = "booster";
+// Ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 nbrboosterposseder.textContent = playerdata.boosters+" en route"; 
 nbrboosterposseder.style.position = "absolute";
 nbrboosterposseder.style.top = "35px";
@@ -96,6 +100,8 @@ document.body.appendChild(nbrboosterposseder);
 
 //-------------------------------------------------------------
 //je savait pas faire le script attendre, j'ai du apprendre de google (j'ai pris 1 heure a realiser que mes fonction doivent être async)
+// Trop compliqué je pense, pour le coup faire une fonction est possible mais vous auriez juste pu faire un settimeout dans le code en question. Je pense que faire une fonction spécifique a l'action en cours plutôt qu'a sleep aurait été plus logique (dans ma logique de dev en tout cas)
+// Ou alors, il faut lui passer aussi la fonction qui doit s'éxécuter après le temps, et du coup c'est OK mais il faut préparer les fonctions qui vont bien. 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -160,10 +166,12 @@ actualitemshopbutton.style.transform = "translate(-50%, -50%)";
 
 let clickarrow = new Audio("assets/sfx/actuallypressingbutton.m4a") //sfx des que tu clique la fleche dorée
 
+// il est important d'écrire les fonctions avec des noms en camelCase (ordinateurGraphiques)
 function computergraphics(status, fromapplication){
     if (status=="on") {
         document.body.appendChild(shopbutton)
         document.body.appendChild(experienceofparenthood)
+        // des classes :-O
         flecheordinateur.style.top = "75%";
         flecheordinateur.style.left = "7%";
         flecheordinateur.style.transform = "translate(-50%, -50%) rotate(-250deg)";
@@ -206,6 +214,7 @@ function computergraphics(status, fromapplication){
     }
 }
 
+// Tous les mouseenter / mouseleave, cela peut se faire facilement en HTML CSS. Je sais que vous n'étiez pas là pendant ce cours, donc c'est moins évident pour vous. Mais ça vous aurait économiser pas mal de JS. Et c'est mieux pour la vitesse de chargement, le code JS est plus leger donc plus lisible, etc. 
 shopbutton.addEventListener("mouseenter", () => {
   shopbutton.style.width = "25%"; 
 });
@@ -222,6 +231,7 @@ experienceofparenthood.addEventListener("mouseleave", () => {
   experienceofparenthood.style.width = "20%"; 
 });
 
+// Celui là, c'était obligé en JS !
 actualitemshopbutton.addEventListener("mouseenter", () => {
     new Audio("assets/sfx/fish.m4a").play();
 })
@@ -244,6 +254,14 @@ toothpick.style.top = "30%";
 toothpick.style.left = "35%";
 toothpick.style.transform = "translate(-50%, -50%)";
 
+// Fallait bien que je résolve ce bug. 
+toothpick.addEventListener("click", () => {
+    computergraphics("on", true)
+    gametitle.remove()
+    toothpick.remove()
+    dabug.remove()
+})
+
 
 function itemshop(){
     computergraphics("off", true)
@@ -251,7 +269,6 @@ function itemshop(){
     gametitle.className = "pixelbaseText";
     gametitle.textContent = "THE ITEM SHOP";
     document.body.append(gametitle)
-
     document.body.appendChild(toothpick)
     document.body.appendChild(dabug)
 }
@@ -286,6 +303,7 @@ const firepng = document.createElement("img");
     redbutonpng.style.cursor = "pointer";
     redbutonpng.style.transform = "translate(-50%, -50%)";
 
+    // La question : pourquoi ne pas avoir fait un bouton en HTML CSS ? Ce n'est pas super intuitif !
     const closebutton = document.createElement("img");
     closebutton.src = "assets/pictures/closebutton.png";
     closebutton.style.width = "10%";
@@ -295,6 +313,7 @@ const firepng = document.createElement("img");
     closebutton.style.cursor = "pointer";
     closebutton.style.transform = "translate(-50%, -50%)";
 
+    // En plus, ce n'est pas hyper accessible, les gens malvoyants ne savent pas qu'il faut cliquer, et ils ne savent pas ce que sont des images puisqu'il n'y a pas de ALT !
     const buybutton = document.createElement("img");
     buybutton.src = "assets/pictures/buyicon.png";
     buybutton.style.width = "10%";
@@ -319,7 +338,8 @@ closebutton.addEventListener("click", () => {
 })
 
 
-let expparenthoodstatus=0
+let expparenthoodstatus = 0
+// ce nom de function est trop long omg !! Bon, non, il est bien mais pas sans le camelCase
 function experienceofparenthoodgameengine(expparenthoodstatus){
     computergraphics("off", true)
     document.body.appendChild(firepng)
@@ -400,6 +420,7 @@ experienceofparenthood.addEventListener("click", ()=>{
     boostershop.style.cursor = "pointer";
     boostershop.style.transform = "translate(-50%, -50%)";
 
+    // Pas vu en cours mais c'est sympa ce graphique ! Bon usage de la boucle for!
 function drawPriceGraph() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -429,6 +450,7 @@ function drawPriceGraph() {
 const price = document.createElement("div");
 price.id = "moneyDisplay";
 
+// Ahhhhh ... hhhh .... hhhh
 price.style.position = "absolute";
 price.style.top = "68%";
 price.style.left = "60%";
@@ -438,6 +460,7 @@ price.style.color = "white";
 price.style.fontFamily = "Arial, sans-serif";
 price.style.textShadow = "2px 2px 4px black";
 
+// Vous auriez gagné tellement de lignes en mettant tout ça en CSS et HTML
 const canvas = document.createElement("canvas");
 canvas.id = "priceGraph";
 canvas.width = 600;
@@ -476,10 +499,19 @@ function updateBoosterPrice() {
     priceHistory.push(boosterPrice);
     if (priceHistory.length > maxPoints) priceHistory.shift();
 
+    // techniquement, cette fonction n'a rien a voir avec l'update du prix du booster. 
     drawPriceGraph();
 }
 
+//J'aurai fait une fonction
+function boosterFeature() {
 
+    updateBoosterPrice()
+    drawPriceGraph()
+    
+}
+
+// Elle est en doublon celle la non ? 
 function drawPriceGraph() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -590,6 +622,7 @@ async function therealactualshop(shopstatus) {
         document.body.appendChild(buybutton);
         document.body.appendChild(closebutton2);
     }
+    // Ok, pour cet usage, avoir des pause, sleep est utile et plus lisible. 
     await sleep(10000);
     if (buyboosterstatus==0 && left==0){
         new Audio("assets/NarratorVoicelines/doesntbuy.m4a").play();
