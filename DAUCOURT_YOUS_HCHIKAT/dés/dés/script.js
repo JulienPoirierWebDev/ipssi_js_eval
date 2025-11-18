@@ -30,6 +30,76 @@ function changerDeJoueur() {
 }
 
 
+
+
+function lancerLeDé() {
+  return Math.floor(Math.random() * 6) + 1;
+}
+
+function mettreAJourLaValeurDuDé(valeurDe) {
+  document.getElementById(`p${numeroJoueurActif}-dice`).textContent = facesDeDe[valeurDe - 1];
+}
+
+function leDéNeTombePasSurLe1(valeurDe) {
+  scoreActuelDuTour += valeurDe;
+  document.getElementById(`p${numeroJoueurActif}-round`).textContent = scoreActuelDuTour;
+  affichageResultat.textContent = `Joueur ${numeroJoueurActif} a obtenu ${valeurDe}`;
+}
+
+function leDéTombeSurLe1() {
+  affichageResultat.textContent = `Oh non ! Joueur ${numeroJoueurActif} a fait 1 :(`;
+  changerDeJoueur();
+}
+
+
+
+
+function mettreAJourLesScores() {
+  scoresTotaux[numeroJoueurActif - 1] += scoreActuelDuTour;
+  document.getElementById(`p${numeroJoueurActif}-total`).textContent = scoresTotaux[numeroJoueurActif - 1];
+}
+
+function vérifierSiLeJeuEstTerminé() {
+  return scoresTotaux[numeroJoueurActif - 1] >= scoreVictoire
+}
+  
+function finirLeJeu() {
+  affichageResultat.textContent = `🏆 Joueur ${numeroJoueurActif} a gagné !`;
+  boutonLancerDe.disabled = true;
+  boutonGarderScore.disabled = true;
+}
+
+
+
+function initialiserJeu() {
+  
+  boutonLancerDe.addEventListener('click', () => {
+    const valeurDe = lancerLeDé();
+    
+    mettreAJourLaValeurDuDé(valeurDe);  
+    if (valeurDe !== 1) {
+      leDéNeTombePasSurLe1(valeurDe);
+    } else {
+      leDéTombeSurLe1();
+    }
+    
+  });
+
+  boutonGarderScore.addEventListener('click', () => {
+  mettreAJourLesScores();
+  
+  const jeuEstTerminé = vérifierSiLeJeuEstTerminé();
+    if (jeuEstTerminé) {
+      finirLeJeu();
+    } else {
+      changerDeJoueur();
+    }
+  });
+
+  boiteJoueur1.classList.add('active');
+}
+
+initialiserJeu();
 boutonLancerDe.addEventListener('click', () => {
   const valeurDe = Math.floor(Math.random() * 6) + 1;
   
