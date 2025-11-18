@@ -16,6 +16,7 @@
 
 // Étape 7 : bonus - empêcher d'acheter si argent insuffisant
 
+// Ohlala, mais c'est quoi cette manière d'afficher les objets, c'est super difficile a lire !
 const marché_médiéval=[{name:'Potion',price:10,qty:0},{name:'Épée',price:50,qty:0},{name:'Bouclier',price:40,qty:0},{name:'Herbe',price:5,qty:0},{name:'Elixir',price:100,qty:0}];
 const marché_renaissance=[{name:'Pistolet',price:70,qty:0},{name:'Armure',price:120,qty:0},{name:'Carte',price:30,qty:0},{name:'Boussole',price:25,qty:0},{name:'Tonneau de poudre',price:200,qty:0}];
 const marché_modernité=[{name:'Smartphone',price:300,qty:0},{name:'Ordinateur',price:800,qty:0},{name:'Drone',price:150,qty:0},{name:'Casque VR',price:400,qty:0},{name:'Imprimante 3D',price:600,qty:0}];
@@ -24,7 +25,8 @@ const marché_final=[{name:'Objet Mystère',price:9999,qty:0}];
 
 
 let money=100;
-let currentMarket="medieval";
+let currentMarket = "medieval";
+// Ca c'est malin, on utilise un objet pour suivre les marchés débloqués
 let unlocked={medieval:true,renaissance:false,modernité:false,futuriste:false,final:false};
 
 
@@ -33,7 +35,7 @@ const moneyDisplay=document.getElementById("money");
 const buySound=document.getElementById("buySound");
 const sellSound=document.getElementById("sellSound");
 
-
+// Ok, malin aussi. 
 function getMarket(){
     switch(currentMarket){
         case"medieval": return marché_médiéval;
@@ -49,8 +51,16 @@ function renderMarket(){
     const market=getMarket();
     tbody.innerHTML="";
     market.forEach((item,index)=>{
-        const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${item.name}</td><td>${item.price}</td><td>${item.qty}</td><td><button onclick="buyItem(${index})">Acheter</button><button onclick="sellItem(${index})">Vendre</button></td>`;
+        const tr = document.createElement("tr");
+        // On peut rendre ça plus lisible en respectant une indentation.
+        // Par contre, le innerHTML n'est pas conseillé pour des raisons de sécurité (XSS).
+        tr.innerHTML = `<td>${item.name}</td>
+        <td>${item.price}</td>
+        <td>${item.qty}</td>
+        <td>
+            <button onclick="buyItem(${index})">Acheter</button>
+            <button onclick="sellItem(${index})">Vendre</button>
+        </td>`;
         tbody.appendChild(tr);
     });
     moneyDisplay.textContent="💵 Argent : "+money;
@@ -58,7 +68,9 @@ function renderMarket(){
 
 function buyItem(i){
     const market=getMarket();
-    const item=market[i];
+    const item = market[i];
+    // drole de manière d'écrire le if, on ne l'a pas vu comme ça en cours :-O 
+    // Je préfère la forme avec accolades pour la lisibilité
     if(money<item.price) return alert("Pas assez d'argent !");
     money-=item.price;
     item.qty++;
@@ -77,16 +89,27 @@ function sellItem(i){
     sellSound.play();
     renderMarket();
 }
-
-
-function updatePrices(market){
-    market.forEach(item=>{
+function updatePricesForOneMarket(market) {
+     market.forEach(item=>{
         let variation = Math.random() * 0.4 - 0.2; // -20% à +20%
         let delta = Math.round(item.price * variation);
         if(delta === 0) delta = (variation > 0 ? 1 : -1); // au moins ±1 pour petits objets
         item.price = Math.max(1, item.price + delta);
     });
+
 }
+
+function updatePrices(market) {
+    updatePricesForOneMarket(marché_médiéval)
+    
+    // Je reprend les if en ligne comme vous aha !
+    if(unlocked.renaissance) updatePricesForOneMarket(marché_renaissance);
+    if(unlocked.modernité) updatePricesForOneMarket(marché_modernité);
+    if(unlocked.futuriste) updatePricesForOneMarket(marché_futuriste);
+    if(unlocked.final) updatePricesForOneMarket(marché_final);
+    
+}
+// Met à jour les prix toutes les 2 secondes mais que sur le marché actuel. C'est dommage ! Les autres ne fluctuent plus du coup... Je vais changer ça dans la fonction updatePrices.
 setInterval(()=>{updatePrices(getMarket());renderMarket();},2000);
 
 
