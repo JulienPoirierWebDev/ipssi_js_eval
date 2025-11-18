@@ -19,10 +19,12 @@ let xpToNextLevel = 100;
 let autoClickerLevel = 0;
 let autoClickerInterval = null;
 
+// J'ai pas eu de shiny mais c'est bien d'y avoir pensé !
 // Variable globale pour contrôler les chances de shiny (accessible via console)
 window.shinyChance = 0.005; // Par défaut 0.5%
 
 // Fonction console pour activer/désactiver le mode shiny 100%
+// Vous ajoutez même des fonctions de débug, sympa !
 window.setShinyMode = function(enabled = true) {
 	if (enabled) {
 		window.shinyChance = 1.0;
@@ -131,6 +133,7 @@ function showLevelUpNotification() {
   notification.appendChild(content);
   document.body.appendChild(notification);
   
+  // double setTimeout ! Bravo !
   setTimeout(() => {
     notification.style.opacity = '0';
     setTimeout(() => notification.remove(), 500);
@@ -179,6 +182,7 @@ function getDisplayName(pokemon) {
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM Content Loaded");
   
+  // C'est déja de la POO là ! 
   // === GESTIONNAIRE AUDIO ===
   const audioManager = {
     // Pool d'instances audio pour permettre la superposition
@@ -281,6 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Système de gestion des onglets
   const tabsContainer = document.querySelector(".tabs-container");
   const tabButtons = document.querySelectorAll(".tab-select");
+  // currentTabIndex n'est jamais utilisé
   let currentTabIndex = 0;
 	const langSelect = document.querySelector('#lang-select');
 	if (langSelect) {
@@ -345,6 +350,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialiser les éléments de l'UI du clicker
   pointsDisplay = document.querySelector("#points");
   const clickBtn = document.querySelector("#clickBtn");
+
+  // clickerCenter, clickgain et upgrades ne sont pas utilisé.
 	const clickerCenter = document.querySelector('.clicker-center');
 	// Valeur de points gagnés par clic (facile à adapter plus tard)
 	let clickGain = 1;
@@ -415,6 +422,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		} catch(e) { console.warn('Chargement impossible', e); }
 	}
+	// Je ne suis pas sur qu'il soit utile de lier save progress a window. Pour quelle raison avez vous eu besoin de faire cela ? Pour l'utiliser en débug ? 
 	if (typeof window !== 'undefined') window.saveProgress = saveProgress;
   
   // Initialiser le système de combat
@@ -595,9 +603,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			]
 		}
 	];
-
 	// Convertir les tracks en ancien format pour compatibilité
 	const upgradeBranches = [];
+	console.log(upgradeBranches)
+	// trackProgress n'est jamais lu
 	const trackProgress = {}; // trackId -> niveau actuel (0-based)
 	upgradeTracksData.forEach(track => {
 		track.levels.forEach((level, idx) => {
@@ -605,6 +614,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (!branch) {
 				upgradeBranches.push({ key: track.branch, name: track.branchName, color: track.color, upgrades: [] });
 			}
+			// Je vois que vous parcourez les upgrades, par branche et par upgrade, mais l'usage des ternaires avec le chainage des fonctions rend la lecture assez difficile !
 			upgradeBranches.find(b => b.key === track.branch).upgrades.push({
 				id: `${track.trackId}_${idx + 1}`,
 				cost: level.cost,
@@ -616,13 +626,16 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 		});
 	});
-
+	console.log("628")
+	console.log(upgradeBranches)
+	
 	function effectiveClickGain() {
 		let base = 1 + flatClickBonus;
 		base *= (1 + clickPercentBonus/100);
 		base *= (1 + globalBonusPercent/100);
 		return Math.max(1, Math.floor(base));
 	}
+
 
 	function restartPassiveInterval(){
 		if (passiveInterval) clearInterval(passiveInterval);
@@ -668,6 +681,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Note: la mise à jour de la carte est maintenant gérée par updateSingleUpgradeCard() dans le listener du bouton
 	}
 
+	// Cette fonction est bien trop grosse. Il serait sympa de la découper notamment : créer une carte, créer une branche. Cela rendrai la chose plus aérée. 
 	function renderUpgradeBranches(){
 		if (!upgradesContainer) return;
 		console.log('=== renderUpgradeBranches appelé ===');
@@ -858,7 +872,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		}
 		
-		// Mettre à jour la description
+		// Mettre à jour la description -> Si vous identifier une fonction pour un bloc de code, c'est que ... c'est une fonction ? Je vois que vous avez tenté de modulariser le code dans des scripts différents, ça sera l'endroit où ranger chaque fonction. Je sais bien que découper plein de petites fonctions dans le même fichier, c'est vite complexe. 
 		if (descEl) {
 			descEl.textContent = maxed ? track.levels[track.levels.length - 1].desc : nextUpgrade.desc;
 		}
@@ -2746,7 +2760,8 @@ function initializeBattleSystem() {
           // Pas d'XP car le joueur 1 a perdu
           try { if (window.saveProgress) window.saveProgress(); } catch(e) {}
         }
-		// Déclencher un événement global de victoire (joueur 2)
+		// Déclencher un événement global de victoire (joueur 2) 
+		// Ca me parait compliqué de créer des evenements customs. Je comprend l'intéret mais une fonction appelé au moment du round, si tous les pokemons adversaires sont KO, me parait plus simple. 
 		try { document.dispatchEvent(new Event('battleVictory')); } catch(e) {}
 		
 		// Animation et son de défaite pour le joueur
@@ -3892,6 +3907,7 @@ function initializeBattleSystem() {
 			try { if (typeof window.__internalReset === 'function') window.__internalReset(); } catch(e) { console.warn('internalReset failed', e); }
 			// Feedback visuel simple
 			try {
+				// Une class svp plutôt que 10 lignes de CSS avec JS aha !
 				const note = document.createElement('div');
 				note.textContent = 'Progression réinitialisée';
 				note.style.position = 'fixed';
