@@ -100,3 +100,34 @@ function initialiserJeu() {
 }
 
 initialiserJeu();
+boutonLancerDe.addEventListener('click', () => {
+  const valeurDe = Math.floor(Math.random() * 6) + 1;
+  
+  document.getElementById(`p${numeroJoueurActif}-dice`).textContent = facesDeDe[valeurDe - 1];
+  
+  if (valeurDe !== 1) {
+    scoreActuelDuTour += valeurDe;
+    document.getElementById(`p${numeroJoueurActif}-round`).textContent = scoreActuelDuTour;
+    affichageResultat.textContent = `Joueur ${numeroJoueurActif} a obtenu ${valeurDe}`;
+  } else {
+    affichageResultat.textContent = `Oh non ! Joueur ${numeroJoueurActif} a fait 1 :(`;
+    changerDeJoueur();
+  }
+});
+
+
+boutonGarderScore.addEventListener('click', () => {
+  scoresTotaux[numeroJoueurActif - 1] += scoreActuelDuTour;
+  document.getElementById(`p${numeroJoueurActif}-total`).textContent = scoresTotaux[numeroJoueurActif - 1];
+  
+  if (scoresTotaux[numeroJoueurActif - 1] >= scoreVictoire) {
+    affichageResultat.textContent = `🏆 Joueur ${numeroJoueurActif} a gagné !`;
+    boutonLancerDe.disabled = true;
+    boutonGarderScore.disabled = true;
+  } else {
+    changerDeJoueur();
+  }
+});
+
+
+boiteJoueur1.classList.add('active');
